@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -46,7 +48,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMedarbejder(string id, Medarbejder medarbejder)
         {
-            if (id != medarbejder.id)
+            if (id != medarbejder.Id)
             {
                 return BadRequest();
             }
@@ -75,8 +77,29 @@ namespace WebApplication1.Controllers
         // POST: api/Medarbejders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Medarbejder>> PostMedarbejder(Medarbejder medarbejder)
+        public async Task<ActionResult<Medarbejder>> PostMedarbejder(SignupDTO newMedarbejder)
         {
+            if (await _context.Medarbejder.AnyAsync(item => item.Navn == newMedarbejder.Navn))
+            {
+                return Conflict(new { message = "Username is already in use." });
+            }
+
+            if (await _context.Medarbejder.AnyAsync(item => item.Email == newMedarbejder.Email))
+            {
+                return Conflict(new { message = "Email is already in use." });
+            }
+            else if (!isValidEmail(newMedarbejder.Email))
+            {
+                return Conflict(new { message = "Email is not valid." });
+            }
+
+            if (!IsPasswordSecure(newMedarbejder.Password))
+            {
+                return Conflict(new { message = "Password is not secure." });
+            }
+
+            var medarbejder = MapSignUpDTOToMedarbejder(newMedarbejder);
+
             _context.Medarbejder.Add(medarbejder);
             try
             {
@@ -84,7 +107,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateException)
             {
-                if (MedarbejderExists(medarbejder.id))
+                if (MedarbejderExists(medarbejder.Id))
                 {
                     return Conflict();
                 }
@@ -94,7 +117,7 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtAction("GetMedarbejder", new { id = medarbejder.id }, medarbejder);
+            return CreatedAtAction("GetMedarbejder", new { id = medarbejder.Id }, medarbejder);
         }
 
         // DELETE: api/Medarbejders/5
@@ -113,9 +136,43 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
+        private bool IsPasswordSecure(string password)
+        {
+            var hasUpperCase = new Regex(@"[A-Z]+");
+            var hasLowerCase = new Regex(@"[a-z]+");
+            var hasDigits = new Regex(@"[0-9]+");
+            var hasSpecialChar = new Regex(@"[\W_]+");
+            var hasMinimum8Chars = new Regex(@".{8,}");
+
+            return hasUpperCase.IsMatch(password)
+                   && hasLowerCase.IsMatch(password)
+                   && hasDigits.IsMatch(password)
+                   && hasSpecialChar.IsMatch(password)
+                   && hasMinimum8Chars.IsMatch(password);
+        }
+
+        private bool isValidEmail(string Email)
+        {
+            return new Regex(@"(?>(?:[0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+)[a-zA-Z]{2,9}").IsMatch(Email);
+        }
+        private Medarbejder MapSignUpDTOToMedarbejder(SignupDTO signUpDTO)
+        {
+            String hashedPassword = BCrypt.Net.BCrypt.HashPassword(signUpDTO.Password);
+            String salt = hashedPassword.Substring(0, 29);
+
+            return new Medarbejder
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Email = signUpDTO.Email,
+                Navn = signUpDTO.Navn,
+                Password = hashedPassword,
+                // REMOVE FROM PRODUCTION
+                RealPassword = signUpDTO.Password
+            };
+        }
         private bool MedarbejderExists(string id)
         {
-            return _context.Medarbejder.Any(e => e.id == id);
+            return _context.Medarbejder.Any(e => e.Id == id);
         }
     }
 }

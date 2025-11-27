@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutNedetid(string id, Nedetid nedetid)
         {
-            if (id != nedetid.id)
+            if (id != nedetid.Id)
             {
                 return BadRequest();
             }
@@ -84,7 +84,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateException)
             {
-                if (NedetidExists(nedetid.id))
+                if (NedetidExists(nedetid.Id))
                 {
                     return Conflict();
                 }
@@ -94,7 +94,7 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtAction("GetNedetid", new { id = nedetid.id }, nedetid);
+            return CreatedAtAction("GetNedetid", new { id = nedetid.Id }, nedetid);
         }
 
         // DELETE: api/Nedetids/5
@@ -115,7 +115,7 @@ namespace WebApplication1.Controllers
 
         private bool NedetidExists(string id)
         {
-            return _context.Nedetid.Any(e => e.id == id);
+            return _context.Nedetid.Any(e => e.Id == id);
         }
     }
 }

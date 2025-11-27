@@ -2,8 +2,14 @@
 {
     public class Periode : Common
     {
-        public DateTime start { get; set; }
-        public DateTime end { get; set; }
-        public List<Modul> moduler { get; set; }
+        public required DateTime Start { get; set; }
+        public required DateTime End { get; set; }
+        public List<Modul?> Moduler { get; set; } = new List<Modul?>();
+    }
+    public class PeriodeDTO 
+    {
+        public required DateTime Start { get; set; }
+        public required DateTime End { get; set; }
+        public List<Modul?> Moduler { get; set; } = new List<Modul?>();
     }
 }

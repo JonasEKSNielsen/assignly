@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMaskine(string id, Maskine maskine)
         {
-            if (id != maskine.id)
+            if (id != maskine.Id)
             {
                 return BadRequest();
             }
@@ -84,7 +84,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateException)
             {
-                if (MaskineExists(maskine.id))
+                if (MaskineExists(maskine.Id))
                 {
                     return Conflict();
                 }
@@ -94,7 +94,7 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtAction("GetMaskine", new { id = maskine.id }, maskine);
+            return CreatedAtAction("GetMaskine", new { id = maskine.Id }, maskine);
         }
 
         // DELETE: api/Maskines/5
@@ -115,7 +115,7 @@ namespace WebApplication1.Controllers
 
         private bool MaskineExists(string id)
         {
-            return _context.Maskine.Any(e => e.id == id);
+            return _context.Maskine.Any(e => e.Id == id);
         }
     }
 }

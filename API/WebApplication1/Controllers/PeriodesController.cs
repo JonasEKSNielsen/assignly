@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPeriode(string id, Periode periode)
         {
-            if (id != periode.id)
+            if (id != periode.Id)
             {
                 return BadRequest();
             }
@@ -84,7 +84,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateException)
             {
-                if (PeriodeExists(periode.id))
+                if (PeriodeExists(periode.Id))
                 {
                     return Conflict();
                 }
@@ -94,7 +94,7 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtAction("GetPeriode", new { id = periode.id }, periode);
+            return CreatedAtAction("GetPeriode", new { id = periode.Id }, periode);
         }
 
         // DELETE: api/Periodes/5
@@ -115,7 +115,7 @@ namespace WebApplication1.Controllers
 
         private bool PeriodeExists(string id)
         {
-            return _context.Periode.Any(e => e.id == id);
+            return _context.Periode.Any(e => e.Id == id);
         }
     }
 }

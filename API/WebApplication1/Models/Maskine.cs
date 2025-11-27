@@ -2,10 +2,18 @@
 {
     public class Maskine : Common
     {
-        public string navn { get; set; }
-        public string egenskabId { get; set; }
-        public Egenskab egenskab { get; set; }
-        public List<Modul> moduler { get; set; }
-        public List<Nedetid> nedetider { get; set; }
+        public required string Navn { get; set; }
+        public required string EgenskabId { get; set; }
+        public Egenskab? Egenskab { get; set; }
+        public List<Modul?> Moduler { get; set; } = new List<Modul?>();
+        public List<Nedetid?> Nedetider { get; set; } = new List<Nedetid?>();
+    }
+    public class MaskineDTO
+    {
+        public required string Navn { get; set; }
+        public required string EgenskabId { get; set; }
+        public Egenskab? Egenskab { get; set; }
+        public List<Modul?> Moduler { get; set; } = new List<Modul?>();
+        public List<Nedetid?> Nedetider { get; set; } = new List<Nedetid?>();
     }
 }

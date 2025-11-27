@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutFravaer(string id, Fravaer fravaer)
         {
-            if (id != fravaer.id)
+            if (id != fravaer.Id)
             {
                 return BadRequest();
             }
@@ -84,7 +84,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateException)
             {
-                if (FravaerExists(fravaer.id))
+                if (FravaerExists(fravaer.Id))
                 {
                     return Conflict();
                 }
@@ -94,7 +94,7 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtAction("GetFravaer", new { id = fravaer.id }, fravaer);
+            return CreatedAtAction("GetFravaer", new { id = fravaer.Id }, fravaer);
         }
 
         // DELETE: api/Fravaers/5
@@ -115,7 +115,7 @@ namespace WebApplication1.Controllers
 
         private bool FravaerExists(string id)
         {
-            return _context.Fravaer.Any(e => e.id == id);
+            return _context.Fravaer.Any(e => e.Id == id);
         }
     }
 }

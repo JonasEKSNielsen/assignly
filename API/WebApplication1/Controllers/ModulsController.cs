@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutModul(string id, Modul modul)
         {
-            if (id != modul.id)
+            if (id != modul.Id)
             {
                 return BadRequest();
             }
@@ -84,7 +84,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateException)
             {
-                if (ModulExists(modul.id))
+                if (ModulExists(modul.Id))
                 {
                     return Conflict();
                 }
@@ -94,7 +94,7 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtAction("GetModul", new { id = modul.id }, modul);
+            return CreatedAtAction("GetModul", new { id = modul.Id }, modul);
         }
 
         // DELETE: api/Moduls/5
@@ -115,7 +115,7 @@ namespace WebApplication1.Controllers
 
         private bool ModulExists(string id)
         {
-            return _context.Modul.Any(e => e.id == id);
+            return _context.Modul.Any(e => e.Id == id);
         }
     }
 }

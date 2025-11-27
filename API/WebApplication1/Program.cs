@@ -13,9 +13,16 @@ IConfiguration Configuration = builder.Configuration;
 
 string connectionString = Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DefaultConnection");
 
-builder.Services.AddDbContext<AppDBContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 41));
+builder.Services.AddDbContext<AppDBContext>(options => options.UseMySql(connectionString, serverVersion));
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDBContext>();
+    db.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();

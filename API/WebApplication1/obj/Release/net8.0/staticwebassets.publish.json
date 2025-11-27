@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "EB1soTy2l+MyQgOt5BLTkE/eVrf3EMSDyjw4yCBW4Fw=",
-  "Source": "WebApplication1",
-  "BasePath": "_content/WebApplication1",
-  "Mode": "Default",
-  "ManifestType": "Publish",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"6bYIJCg+KOitb2zS1EE21K7SatCg8EQCiXUjlUM3rYM=","Source":"WebApplication1","BasePath":"/","Mode":"Root","ManifestType":"Publish","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

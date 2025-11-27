@@ -2,10 +2,17 @@
 {
     public class Fravaer : Common
     {
-        public DateTime start { get; set; }
-        public DateTime end { get; set; }
-        public string aarsag { get; set; }
-        public string medarbejderId { get; set; }
-        public Medarbejder medarbejder { get; set; }
+        public required DateTime Start { get; set; }
+        public required DateTime End { get; set; }
+        public required string MedarbejderId { get; set; }
+        public Medarbejder? Medarbejder { get; set; }
+    }
+
+    public class FravaerDTO
+    {
+        public required DateTime Start { get; set; }
+        public required DateTime End { get; set; }
+        public required string MedarbejderId { get; set; }
+        public Medarbejder? Medarbejder { get; set; }
     }
 }

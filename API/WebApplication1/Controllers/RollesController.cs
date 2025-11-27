@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRolle(string id, Rolle rolle)
         {
-            if (id != rolle.id)
+            if (id != rolle.Id)
             {
                 return BadRequest();
             }
@@ -84,7 +84,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateException)
             {
-                if (RolleExists(rolle.id))
+                if (RolleExists(rolle.Id))
                 {
                     return Conflict();
                 }
@@ -94,7 +94,7 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtAction("GetRolle", new { id = rolle.id }, rolle);
+            return CreatedAtAction("GetRolle", new { id = rolle.Id }, rolle);
         }
 
         // DELETE: api/Rolles/5
@@ -115,7 +115,7 @@ namespace WebApplication1.Controllers
 
         private bool RolleExists(string id)
         {
-            return _context.Rolle.Any(e => e.id == id);
+            return _context.Rolle.Any(e => e.Id == id);
         }
     }
 }

@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "KRErXBl7a1M=",
+  "dgSpecHash": "es/a1TolAGE=",
   "success": true,
-  "projectFilePath": "C:\\Users\\jeksn\\Documents\\Projekter\\assignly\\API\\WebApplication1\\WebApplication1.csproj",
+  "projectFilePath": "C:\\Users\\jeksn\\Documents\\GitHub\\assignly\\API\\WebApplication1\\WebApplication1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jeksn\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\jeksn\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\jeksn\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\jeksn\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\jeksn\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\jeksn\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",

@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEgenskab(string id, Egenskab egenskab)
         {
-            if (id != egenskab.id)
+            if (id != egenskab.Id)
             {
                 return BadRequest();
             }
@@ -84,7 +84,7 @@ namespace WebApplication1.Controllers
             }
             catch (DbUpdateException)
             {
-                if (EgenskabExists(egenskab.id))
+                if (EgenskabExists(egenskab.Id))
                 {
                     return Conflict();
                 }
@@ -94,9 +94,36 @@ namespace WebApplication1.Controllers
                 }
             }
 
-            return CreatedAtAction("GetEgenskab", new { id = egenskab.id }, egenskab);
+            return CreatedAtAction("GetEgenskab", new { id = egenskab.Id }, egenskab);
         }
 
+
+        // POST: api/DistanceObjects
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Egenskab>> PostDistanceObject(EgenskabDTO egenskabDTO)
+        {
+            Egenskab egenskab = MapDTOToDistanceObject(egenskabDTO);
+
+            _context.Egenskab.Add(egenskab);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (EgenskabExists(egenskab.Id))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetDistanceObject", new { id = egenskab.Id }, egenskab);
+        }
         // DELETE: api/Egenskabs/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEgenskab(string id)
@@ -115,7 +142,16 @@ namespace WebApplication1.Controllers
 
         private bool EgenskabExists(string id)
         {
-            return _context.Egenskab.Any(e => e.id == id);
+            return _context.Egenskab.Any(e => e.Id == id);
+        }
+
+        private Egenskab MapDTOToDistanceObject(EgenskabDTO dto)
+        {
+            return new Egenskab
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Titel = dto.Titel
+            };
         }
     }
 }

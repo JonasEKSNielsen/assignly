@@ -2,6 +2,10 @@
 {
     public class Egenskab : Common
     {
-        public string titel { get; set; }
+        public required string Titel { get; set; }
+    }
+    public class EgenskabDTO
+    {
+        public required string Titel { get; set; }
     }
 }
