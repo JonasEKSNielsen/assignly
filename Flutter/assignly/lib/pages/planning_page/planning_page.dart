@@ -14,7 +14,7 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
   TextEditingController passwordController = TextEditingController();
   final FocusNode focus = FocusNode();
 
-  List<Appointment> _shiftCollection = <Appointment>[];
+  final List<Appointment> _shiftCollection = <Appointment>[];
   final List<CalendarResource> _employeeCollection = <CalendarResource>[];
   late _DataSource _events;
 
@@ -161,7 +161,7 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                         ),
                         margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
                         padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                        child: Column(
+                        child: const Column(
                           children: [
 
                           ],
