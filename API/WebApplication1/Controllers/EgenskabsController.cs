@@ -75,8 +75,10 @@ namespace WebApplication1.Controllers
         // POST: api/Egenskabs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Egenskab>> PostEgenskab(Egenskab egenskab)
+        public async Task<ActionResult<Egenskab>> PostEgenskab(EgenskabDTO egenskabDTO)
         {
+            Egenskab egenskab = MapDTOToEgenskabObject(egenskabDTO);
+
             _context.Egenskab.Add(egenskab);
             try
             {
@@ -95,34 +97,6 @@ namespace WebApplication1.Controllers
             }
 
             return CreatedAtAction("GetEgenskab", new { id = egenskab.Id }, egenskab);
-        }
-
-
-        // POST: api/DistanceObjects
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Egenskab>> PostDistanceObject(EgenskabDTO egenskabDTO)
-        {
-            Egenskab egenskab = MapDTOToDistanceObject(egenskabDTO);
-
-            _context.Egenskab.Add(egenskab);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (EgenskabExists(egenskab.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetDistanceObject", new { id = egenskab.Id }, egenskab);
         }
         // DELETE: api/Egenskabs/5
         [HttpDelete("{id}")]
@@ -145,7 +119,7 @@ namespace WebApplication1.Controllers
             return _context.Egenskab.Any(e => e.Id == id);
         }
 
-        private Egenskab MapDTOToDistanceObject(EgenskabDTO dto)
+        private Egenskab MapDTOToEgenskabObject(EgenskabDTO dto)
         {
             return new Egenskab
             {

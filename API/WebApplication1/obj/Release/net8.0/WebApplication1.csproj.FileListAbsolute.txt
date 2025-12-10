@@ -579,3 +579,4 @@ C:\Users\jeksn\Documents\GitHub\assignly\API\WebApplication1\obj\Release\net8.0\
 C:\Users\jeksn\Documents\GitHub\assignly\API\WebApplication1\obj\Release\net8.0\WebApplication1.genruntimeconfig.cache
 C:\Users\jeksn\Documents\GitHub\assignly\API\WebApplication1\obj\Release\net8.0\ref\WebApplication1.dll
 C:\Users\jeksn\Documents\GitHub\assignly\API\WebApplication1\bin\Release\net8.0\BCrypt.Net-Next.dll
+C:\Users\jeksn\Documents\Projekter\assignly\API\WebApplication1\bin\Release\net8.0\BCrypt.Net-Next.dll

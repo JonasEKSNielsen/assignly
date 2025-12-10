@@ -5,6 +5,7 @@ C:\Users\jeksn\Documents\Projekter\assignly\API\WebApplication1\obj\Release\net8
 C:\Users\jeksn\Documents\Projekter\assignly\API\WebApplication1\obj\Release\net8.0\PubTmp\Out\WebApplication1.pdb
 C:\Users\jeksn\Documents\Projekter\assignly\API\WebApplication1\obj\Release\net8.0\PubTmp\Out\Azure.Core.dll
 C:\Users\jeksn\Documents\Projekter\assignly\API\WebApplication1\obj\Release\net8.0\PubTmp\Out\Azure.Identity.dll
+C:\Users\jeksn\Documents\Projekter\assignly\API\WebApplication1\obj\Release\net8.0\PubTmp\Out\BCrypt.Net-Next.dll
 C:\Users\jeksn\Documents\Projekter\assignly\API\WebApplication1\obj\Release\net8.0\PubTmp\Out\Humanizer.dll
 C:\Users\jeksn\Documents\Projekter\assignly\API\WebApplication1\obj\Release\net8.0\PubTmp\Out\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\jeksn\Documents\Projekter\assignly\API\WebApplication1\obj\Release\net8.0\PubTmp\Out\Microsoft.Bcl.AsyncInterfaces.dll

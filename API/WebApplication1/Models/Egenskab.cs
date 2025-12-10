@@ -8,9 +8,4 @@
     {
         public required string Titel { get; set; }
     }
-
-    public class EgenskabDTO
-    {
-        public string titel { get; set; }
-    }
 }

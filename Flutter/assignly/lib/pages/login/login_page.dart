@@ -101,6 +101,7 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                     text: "Login", 
                     onTap: () async {
                       var a  = await API.getRequest(ApiPath.egenskab);
+                      a.statusCode;
                       print(a.body);
                       // TODO: BRUG EVENTS
                       //Navigator.push(context, MaterialPageRoute(builder: (context) => const PlanningPage()));

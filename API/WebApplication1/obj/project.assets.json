@@ -8385,11 +8385,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\jeksn\\Documents\\GitHub\\assignly\\API\\WebApplication1\\WebApplication1.csproj",
+      "projectUniqueName": "C:\\Users\\jeksn\\Documents\\Projekter\\assignly\\API\\WebApplication1\\WebApplication1.csproj",
       "projectName": "WebApplication1",
-      "projectPath": "C:\\Users\\jeksn\\Documents\\GitHub\\assignly\\API\\WebApplication1\\WebApplication1.csproj",
+      "projectPath": "C:\\Users\\jeksn\\Documents\\Projekter\\assignly\\API\\WebApplication1\\WebApplication1.csproj",
       "packagesPath": "C:\\Users\\jeksn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\jeksn\\Documents\\GitHub\\assignly\\API\\WebApplication1\\obj\\",
+      "outputPath": "C:\\Users\\jeksn\\Documents\\Projekter\\assignly\\API\\WebApplication1\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -8404,6 +8404,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -8421,8 +8422,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "10.0.100"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -8488,7 +8488,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.100/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -28,8 +28,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "egenskab",
-        "Type": "WebApplication1.Models.Egenskab",
+        "Name": "egenskabDTO",
+        "Type": "WebApplication1.Models.EgenskabDTO",
         "IsRequired": true
       }
     ],
@@ -355,8 +355,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "medarbejder",
-        "Type": "WebApplication1.Models.Medarbejder",
+        "Name": "newMedarbejder",
+        "Type": "WebApplication1.Models.SignupDTO",
         "IsRequired": true
       }
     ],
