@@ -4,4 +4,9 @@
     {
         public string titel { get; set; }
     }
+
+    public class EgenskabDTO
+    {
+        public string titel { get; set; }
+    }
 }
