@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen();
 
 IConfiguration Configuration = builder.Configuration;
 
-string connectionString = Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DefaultConnection");
+string? connectionString = Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DefaultConnection");
 
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 41));
 builder.Services.AddDbContext<AppDBContext>(options => options.UseMySql(connectionString, serverVersion));
