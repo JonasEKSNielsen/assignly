@@ -75,8 +75,10 @@ namespace WebApplication1.Controllers
         // POST: api/Rolles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Rolle>> PostRolle(Rolle rolle)
+        public async Task<ActionResult<Rolle>> PostRolle(RolleDTO dto)
         {
+            Rolle rolle = MapDTOToRolleObject(dto);
+
             _context.Rolle.Add(rolle);
             try
             {
@@ -113,6 +115,18 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
+        private Rolle MapDTOToRolleObject(RolleDTO dto)
+        {
+            return new Rolle
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Navn = dto.navn,
+                medarbejderId = dto.medarbejderId,
+                medarbejder = _context.Medarbejder.Where(n => n.Id == dto.medarbejderId).FirstOrDefault(),
+                egenskabId = dto.egenskabId,
+                egenskab = _context.Egenskab.Where(n => n.Id == dto.egenskabId).FirstOrDefault()
+            };
+        }
         private bool RolleExists(string id)
         {
             return _context.Rolle.Any(e => e.Id == id);

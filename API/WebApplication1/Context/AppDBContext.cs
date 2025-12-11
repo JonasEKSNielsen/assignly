@@ -21,8 +21,6 @@ public DbSet<WebApplication1.Models.Modul> Modul { get; set; } = default!;
 
 public DbSet<WebApplication1.Models.Nedetid> Nedetid { get; set; } = default!;
 
-public DbSet<WebApplication1.Models.Periode> Periode { get; set; } = default!;
-
 public DbSet<WebApplication1.Models.Rolle> Rolle { get; set; } = default!;
 
 }

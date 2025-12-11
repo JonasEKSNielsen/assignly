@@ -166,8 +166,13 @@ namespace WebApplication1.Controllers
                 Email = signUpDTO.Email,
                 Navn = signUpDTO.Navn,
                 Password = hashedPassword,
+                ArbejdsdagStart = signUpDTO.ArbejdsdagStart,
+                ArbejdsdagSlut = signUpDTO.ArbejdsdagSlut,
+                ArbejdstimerOmUgen = signUpDTO.ArbejdstimerOmUgen,
                 // REMOVE FROM PRODUCTION
-                RealPassword = signUpDTO.Password
+                RealPassword = signUpDTO.Password,
+                Tlf = signUpDTO.Tlf,
+                Farve = signUpDTO.Farve
             };
         }
         private bool MedarbejderExists(string id)

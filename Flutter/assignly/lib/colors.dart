@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 Color blue = const Color.fromARGB(255, 0, 174, 239);
 Color orange = const Color.fromARGB(255, 255, 136, 0);
 
-    LinearGradient btnGradient = const LinearGradient(
-      colors: [Color(0xFF1565C0), Color(0xFF00AEEF)],
-      begin: Alignment.bottomCenter,
-      end: Alignment.topCenter,
-    ),
-    clickedGradient = const LinearGradient(
-      colors: [Color(0xFFFF8800), Color(0xFFFFBB33)],
-      begin: Alignment.bottomCenter,
-      end: Alignment.topCenter,
-    ),
-    greenGradient = const LinearGradient(
-      colors: [Color(0xFF3C7D2F), Color(0xFF5EC44A)],
-      begin: Alignment.bottomCenter,
-      end: Alignment.topCenter,
-    );
+LinearGradient btnGradient = const LinearGradient(
+    colors: [Color(0xFF005A5B), Color(0xFF02A676)],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  ),
+  clickedGradient = const LinearGradient(
+    colors: [Color(0xFFFF8800), Color(0xFFFFBB33)],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+  ),
+  microsoftGradient = const LinearGradient(
+    colors: [Color(0xFF1565C0), Color(0xFF00AEEF)],
+    begin: Alignment.bottomCenter,
+    end: Alignment.topCenter,
+);
 
 var yellow = const Color(0xCCFFFF00),
     black = const Color(0xFF000000),
@@ -29,4 +29,9 @@ var yellow = const Color(0xCCFFFF00),
     brightPurple = const Color(0xCCFF00FF),
     orange2 = const Color(0xCCFFA500),
     lightBlue = const Color(0xEE0067B1),
-    darkBlue = const Color(0xEE0047B1);
+    darkBlue = const Color(0xEE0047B1),
+    ocean1 = const Color(0xFF003840),
+    ocean2 = const Color(0xFF005A5B),
+    ocean3 = const Color(0xFF007369),
+    ocean4 = const Color(0xFF008C72),
+    ocean5 = const Color(0xFF02A676);

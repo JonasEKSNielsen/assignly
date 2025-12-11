@@ -75,8 +75,10 @@ namespace WebApplication1.Controllers
         // POST: api/Fravaers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Fravaer>> PostFravaer(Fravaer fravaer)
+        public async Task<ActionResult<Fravaer>> PostFravaer(FravaerDTO dto)
         {
+            Fravaer fravaer = MapDTOToFravaerObject(dto);
+
             _context.Fravaer.Add(fravaer);
             try
             {
@@ -111,6 +113,18 @@ namespace WebApplication1.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        private Fravaer MapDTOToFravaerObject(FravaerDTO dto)
+        {
+            return new Fravaer
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Start = dto.Start,
+                End = dto.End,
+                MedarbejderId = dto.MedarbejderId,
+                Medarbejder = _context.Medarbejder.Where(n => n.Id == dto.MedarbejderId).FirstOrDefault()
+            };
         }
 
         private bool FravaerExists(string id)

@@ -1,6 +1,4 @@
-import 'package:assignly/classes/objects/path.dart';
 import 'package:assignly/colors.dart';
-import 'package:assignly/classes/helpers/api.dart';
 import 'package:assignly/pages/forgot_password/password_page.dart';
 import 'package:assignly/pages/login/login_bloc.dart';
 import 'package:assignly/pages/planning_page/planning_page.dart';
@@ -100,11 +98,8 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                   CustomImageBtn(
                     text: "Login", 
                     onTap: () async {
-                      var a  = await API.getRequest(ApiPath.egenskab);
-                      a.statusCode;
-                      print(a.body);
                       // TODO: BRUG EVENTS
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => const PlanningPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const PlanningPage()));
                     }, 
                     updateFunc: () {}, 
                     gradient: btnGradient,
@@ -118,7 +113,7 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                     onTap: () {}, 
                     updateFunc: () {}, 
                     // TODO: BEDRE FARVE OG NY BILLEDe
-                    gradient: greenGradient,
+                    gradient: microsoftGradient,
                     image: const Image(image: AssetImage("assets/asd.jpg")),
                   ),
                 ],

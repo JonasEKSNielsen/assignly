@@ -75,8 +75,9 @@ namespace WebApplication1.Controllers
         // POST: api/Nedetids
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Nedetid>> PostNedetid(Nedetid nedetid)
+        public async Task<ActionResult<Nedetid>> PostNedetid(NedetidDTO dto)
         {
+            Nedetid nedetid = MapDTOToNedetidObject(dto);
             _context.Nedetid.Add(nedetid);
             try
             {
@@ -113,6 +114,18 @@ namespace WebApplication1.Controllers
             return NoContent();
         }
 
+        private Nedetid MapDTOToNedetidObject(NedetidDTO dto)
+        {
+            return new Nedetid
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Dag = dto.Dag,
+                Tidspunkt = dto.Tidspunkt,
+                Gentagende = dto.Gentagende,
+                Start = dto.Start,
+                End = dto.End,
+            };
+        }
         private bool NedetidExists(string id)
         {
             return _context.Nedetid.Any(e => e.Id == id);

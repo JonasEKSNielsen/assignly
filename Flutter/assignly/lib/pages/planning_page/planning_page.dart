@@ -1,7 +1,7 @@
 import 'package:assignly/pages/planning_page/planning_bloc.dart';
+import 'package:assignly/widgets/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class PlanningPage extends StatefulWidget {
   const PlanningPage({super.key});
@@ -13,11 +13,6 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final FocusNode focus = FocusNode();
-
-  final List<Appointment> _shiftCollection = <Appointment>[];
-  final List<CalendarResource> _employeeCollection = <CalendarResource>[];
-  late _DataSource _events;
-
   
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {}
@@ -35,8 +30,6 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-    _events = _DataSource(_shiftCollection, _employeeCollection);
   }
   
 
@@ -56,26 +49,25 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-
-                            SfCalendar(
-                              view: CalendarView.timelineWeek,
-                              allowedViews: const [
-                                CalendarView.timelineDay,
-                                CalendarView.timelineWeek,
-                                CalendarView.timelineWorkWeek,
-                              ],
-                              showDatePickerButton: true,
-                              resourceViewSettings: const ResourceViewSettings(
-                                displayNameTextStyle: TextStyle(color: Colors.white),
-                                showAvatar: true,
-                                size: 120,
-                                visibleResourceCount: 5,
-                              ),
-                              dataSource: _events,
-                            ),
-
-
+                ShiftScheduler(),
+                /*SfCalendar(
+                  view: CalendarView.timelineWeek,
+                  allowedViews: const [
+                    CalendarView.timelineDay,
+                    CalendarView.timelineWeek,
+                    CalendarView.timelineWorkWeek,
+                  ],
+                  showDatePickerButton: true,
+                  resourceViewSettings: const ResourceViewSettings(
+                    displayNameTextStyle: TextStyle(color: Colors.white),
+                    showAvatar: true,
+                    size: 120,
+                    visibleResourceCount: 5,
+                  ),
+                  dataSource: _events,
+                ),
+                */
+                
                 // SIDE MENU
                 Expanded(
                   child: Container(
@@ -207,13 +199,4 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
       ),
     ),
   );
-}
-
-
-
-class _DataSource extends CalendarDataSource {
-  _DataSource(List<Appointment> source, List<CalendarResource> resourceColl) {
-    appointments = source;
-    resources = resourceColl;
-  }
 }

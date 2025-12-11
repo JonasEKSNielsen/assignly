@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -75,8 +76,10 @@ namespace WebApplication1.Controllers
         // POST: api/Maskines
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Maskine>> PostMaskine(Maskine maskine)
+        public async Task<ActionResult<Maskine>> PostMaskine(MaskineDTO dto)
         {
+            Maskine maskine = MapDTOToMaskine(dto);
+
             _context.Maskine.Add(maskine);
             try
             {
@@ -111,6 +114,41 @@ namespace WebApplication1.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+        private Maskine MapDTOToMaskine(MaskineDTO dto)
+        {
+            List<Nedetid?> nedetider = new List<Nedetid?>();
+            foreach (var item in dto.NedetidIds)
+            {
+                Nedetid? nedetid = _context.Nedetid.Where(n => n.Id == item).FirstOrDefault();
+
+                if (nedetid != null) {
+                    nedetider.Add(nedetid);
+                }
+            }
+
+            List<Modul?> moduler = new List<Modul?>();
+            foreach (var item in dto.NedetidIds)
+            {
+                Modul? modul = _context.Modul.Where(n => n.Id == item).FirstOrDefault();
+
+                if (modul != null)
+                {
+                    moduler.Add(modul);
+                }
+            }
+
+            Egenskab? egenskab = _context.Egenskab.Where(e => e.Id == dto.EgenskabId).FirstOrDefault();
+
+            return new Maskine
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Navn = dto.Navn,
+                EgenskabId = dto.EgenskabId,
+                Egenskab = egenskab,
+                Moduler = moduler,
+                Nedetider = nedetider,
+            };
         }
 
         private bool MaskineExists(string id)

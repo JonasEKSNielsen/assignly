@@ -19,12 +19,13 @@
         public required DateTime Start { get; set; }
         public required DateTime End { get; set; }
     }
+    // UDEN ID
     public class NedetidDTO
     {
         public required Hverdag Dag { get; set; }
         public required TimeOnly Tidspunkt { get; set; }
         public required bool Gentagende { get; set; }
-        public required DateTime? Start { get; set; }
-        public required DateTime? End { get; set; }
+        public required DateTime Start { get; set; }
+        public required DateTime End { get; set; }
     }
 }

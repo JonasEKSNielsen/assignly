@@ -75,8 +75,10 @@ namespace WebApplication1.Controllers
         // POST: api/Moduls
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Modul>> PostModul(Modul modul)
+        public async Task<ActionResult<Modul>> PostModul(ModulDTO dto)
         {
+            Modul modul = MapDTOToModul(dto);
+
             _context.Modul.Add(modul);
             try
             {
@@ -112,7 +114,27 @@ namespace WebApplication1.Controllers
 
             return NoContent();
         }
+        private Modul MapDTOToModul(ModulDTO dto)
+        {
+            List<Medarbejder?> medarbejdere = new List<Medarbejder?>();
+            foreach (var item in dto.MedarbejderIDs)
+            {
+                Medarbejder? medarbejder = _context.Medarbejder.Where(n => n.Id == item).FirstOrDefault();
 
+                if (medarbejder != null)
+                {
+                    medarbejdere.Add(medarbejder);
+                }
+            }
+
+            return new Modul
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                Start = dto.Start,
+                End = dto.End,
+                Medarbejdere = medarbejdere,
+            };
+        }
         private bool ModulExists(string id)
         {
             return _context.Modul.Any(e => e.Id == id);

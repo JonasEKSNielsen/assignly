@@ -97,8 +97,20 @@ namespace WebApplication1.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<DateTime>("ArbejdsdagSlut")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("ArbejdsdagStart")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("ArbejdstimerOmUgen")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Farve")
                         .HasColumnType("longtext");
 
                     b.Property<string>("ModulId")
@@ -134,16 +146,10 @@ namespace WebApplication1.Migrations
                     b.Property<DateTime>("End")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("PeriodeId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PeriodeId");
 
                     b.ToTable("Modul");
                 });
@@ -176,22 +182,6 @@ namespace WebApplication1.Migrations
                     b.HasIndex("MaskineId");
 
                     b.ToTable("Nedetid");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.Periode", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Periode");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Rolle", b =>
@@ -262,17 +252,6 @@ namespace WebApplication1.Migrations
                         .HasForeignKey("ModulId");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.Modul", b =>
-                {
-                    b.HasOne("WebApplication1.Models.Periode", "Periode")
-                        .WithMany("Moduler")
-                        .HasForeignKey("PeriodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Periode");
-                });
-
             modelBuilder.Entity("WebApplication1.Models.Nedetid", b =>
                 {
                     b.HasOne("WebApplication1.Models.Maskine", null)
@@ -308,11 +287,6 @@ namespace WebApplication1.Migrations
             modelBuilder.Entity("WebApplication1.Models.Modul", b =>
                 {
                     b.Navigation("Medarbejdere");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.Periode", b =>
-                {
-                    b.Navigation("Moduler");
                 });
 #pragma warning restore 612, 618
         }
