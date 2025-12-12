@@ -77,28 +77,28 @@ namespace WebApplication1.Controllers
         // POST: api/Medarbejders
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Medarbejder>> PostMedarbejder(SignupDTO newMedarbejder)
+        public async Task<ActionResult<Medarbejder>> PostMedarbejder(SignupDTO dto)
         {
-            if (await _context.Medarbejder.AnyAsync(item => item.Navn == newMedarbejder.Navn))
+            if (await _context.Medarbejder.AnyAsync(item => item.Navn == dto.Navn))
             {
                 return Conflict(new { message = "Username is already in use." });
             }
 
-            if (await _context.Medarbejder.AnyAsync(item => item.Email == newMedarbejder.Email))
+            if (await _context.Medarbejder.AnyAsync(item => item.Email == dto.Email))
             {
                 return Conflict(new { message = "Email is already in use." });
             }
-            else if (!isValidEmail(newMedarbejder.Email))
+            else if (!isValidEmail(dto.Email))
             {
                 return Conflict(new { message = "Email is not valid." });
             }
 
-            if (!IsPasswordSecure(newMedarbejder.Password))
+            if (!IsPasswordSecure(dto.Password))
             {
                 return Conflict(new { message = "Password is not secure." });
             }
 
-            var medarbejder = MapSignUpDTOToMedarbejder(newMedarbejder);
+            var medarbejder = MapSignUpDTOToMedarbejder(dto);
 
             _context.Medarbejder.Add(medarbejder);
             try

@@ -117,14 +117,22 @@ namespace WebApplication1.Controllers
 
         private Rolle MapDTOToRolleObject(RolleDTO dto)
         {
+            List<Egenskab?> egenskaber = new List<Egenskab?>();
+            foreach (var item in dto.EgenskabIds)
+            {
+                Egenskab? egenskab = _context.Egenskab.Where(n => n.Id == item).FirstOrDefault();
+
+                if (egenskab != null)
+                {
+                    egenskaber.Add(egenskab);
+                }
+            }
+
             return new Rolle
             {
                 Id = Guid.NewGuid().ToString("N"),
                 Navn = dto.navn,
-                medarbejderId = dto.medarbejderId,
-                medarbejder = _context.Medarbejder.Where(n => n.Id == dto.medarbejderId).FirstOrDefault(),
-                egenskabId = dto.egenskabId,
-                egenskab = _context.Egenskab.Where(n => n.Id == dto.egenskabId).FirstOrDefault()
+                Egenskaber = egenskaber,
             };
         }
         private bool RolleExists(string id)

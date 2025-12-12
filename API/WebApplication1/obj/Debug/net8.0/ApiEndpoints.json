@@ -137,8 +137,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "fravaer",
-        "Type": "WebApplication1.Models.Fravaer",
+        "Name": "dto",
+        "Type": "WebApplication1.Models.FravaerDTO",
         "IsRequired": true
       }
     ],
@@ -355,7 +355,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "newMedarbejder",
+        "Name": "dto",
         "Type": "WebApplication1.Models.SignupDTO",
         "IsRequired": true
       }

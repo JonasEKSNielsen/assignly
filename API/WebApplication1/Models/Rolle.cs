@@ -3,15 +3,11 @@
     public class Rolle : Common
     {
         public required string Navn { get; set; }
-        public string? medarbejderId { get; set; }
-        public Medarbejder? medarbejder { get; set; }
-        public string? egenskabId { get; set; }
-        public Egenskab? egenskab { get; set; }
+        public List<Egenskab?> Egenskaber { get; set; } = new List<Egenskab?>();
     }
     public class RolleDTO
     {
         public required string navn { get; set; }
-        public string? medarbejderId { get; set; }
-        public string? egenskabId { get; set; }
+        public List<string> EgenskabIds { get; set; } = new List<string>();
     }
 }
