@@ -21,24 +21,12 @@ namespace WebApplication1.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("MaskineModul", b =>
-                {
-                    b.Property<string>("MaskinerId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("ModulerId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("MaskinerId", "ModulerId");
-
-                    b.HasIndex("ModulerId");
-
-                    b.ToTable("MaskineModul");
-                });
-
             modelBuilder.Entity("WebApplication1.Models.Egenskab", b =>
                 {
                     b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("RolleId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Titel")
@@ -46,6 +34,8 @@ namespace WebApplication1.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RolleId");
 
                     b.ToTable("Egenskab");
                 });
@@ -113,9 +103,6 @@ namespace WebApplication1.Migrations
                     b.Property<string>("Farve")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ModulId")
-                        .HasColumnType("varchar(255)");
-
                     b.Property<string>("Navn")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -133,8 +120,6 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ModulId");
-
                     b.ToTable("Medarbejder");
                 });
 
@@ -146,10 +131,20 @@ namespace WebApplication1.Migrations
                     b.Property<DateTime>("End")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("MaskineId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("MedarbejderId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MaskineId");
+
+                    b.HasIndex("MedarbejderId");
 
                     b.ToTable("Modul");
                 });
@@ -189,38 +184,25 @@ namespace WebApplication1.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("MedarbejderId")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<string>("Navn")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("egenskabId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("medarbejderId")
-                        .HasColumnType("varchar(255)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("egenskabId");
-
-                    b.HasIndex("medarbejderId");
+                    b.HasIndex("MedarbejderId");
 
                     b.ToTable("Rolle");
                 });
 
-            modelBuilder.Entity("MaskineModul", b =>
+            modelBuilder.Entity("WebApplication1.Models.Egenskab", b =>
                 {
-                    b.HasOne("WebApplication1.Models.Maskine", null)
-                        .WithMany()
-                        .HasForeignKey("MaskinerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApplication1.Models.Modul", null)
-                        .WithMany()
-                        .HasForeignKey("ModulerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("WebApplication1.Models.Rolle", null)
+                        .WithMany("Egenskaber")
+                        .HasForeignKey("RolleId");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Fravaer", b =>
@@ -245,11 +227,17 @@ namespace WebApplication1.Migrations
                     b.Navigation("Egenskab");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.Medarbejder", b =>
+            modelBuilder.Entity("WebApplication1.Models.Modul", b =>
                 {
-                    b.HasOne("WebApplication1.Models.Modul", null)
-                        .WithMany("Medarbejdere")
-                        .HasForeignKey("ModulId");
+                    b.HasOne("WebApplication1.Models.Maskine", null)
+                        .WithMany("Moduler")
+                        .HasForeignKey("MaskineId");
+
+                    b.HasOne("WebApplication1.Models.Medarbejder", "Medarbejder")
+                        .WithMany()
+                        .HasForeignKey("MedarbejderId");
+
+                    b.Navigation("Medarbejder");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Nedetid", b =>
@@ -261,21 +249,15 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Rolle", b =>
                 {
-                    b.HasOne("WebApplication1.Models.Egenskab", "egenskab")
-                        .WithMany()
-                        .HasForeignKey("egenskabId");
-
-                    b.HasOne("WebApplication1.Models.Medarbejder", "medarbejder")
+                    b.HasOne("WebApplication1.Models.Medarbejder", null)
                         .WithMany("Roller")
-                        .HasForeignKey("medarbejderId");
-
-                    b.Navigation("egenskab");
-
-                    b.Navigation("medarbejder");
+                        .HasForeignKey("MedarbejderId");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Maskine", b =>
                 {
+                    b.Navigation("Moduler");
+
                     b.Navigation("Nedetider");
                 });
 
@@ -284,9 +266,9 @@ namespace WebApplication1.Migrations
                     b.Navigation("Roller");
                 });
 
-            modelBuilder.Entity("WebApplication1.Models.Modul", b =>
+            modelBuilder.Entity("WebApplication1.Models.Rolle", b =>
                 {
-                    b.Navigation("Medarbejdere");
+                    b.Navigation("Egenskaber");
                 });
 #pragma warning restore 612, 618
         }

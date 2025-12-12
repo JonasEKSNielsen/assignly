@@ -2,13 +2,13 @@
 {
     public enum Hverdag
     {
-        Mandag,
-        Tirsdag,
-        Onsdag,
-        Torsdag,
-        Fredag,
-        Lørdag,
-        Søndag
+        Monday,
+        Tuesday,
+        Wednesday,
+        Thursday,
+        Friday,
+        Saturday,
+        Sunday
     }
 
     public class Nedetid : Common

@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Modul>>> GetModul()
         {
-            return await _context.Modul.ToListAsync();
+            return await _context.Modul.Include(item => item.Medarbejder).ToListAsync();
         }
 
         // GET: api/Moduls/5
@@ -116,23 +116,12 @@ namespace WebApplication1.Controllers
         }
         private Modul MapDTOToModul(ModulDTO dto)
         {
-            List<Medarbejder?> medarbejdere = new List<Medarbejder?>();
-            foreach (var item in dto.MedarbejderIDs)
-            {
-                Medarbejder? medarbejder = _context.Medarbejder.Where(n => n.Id == item).FirstOrDefault();
-
-                if (medarbejder != null)
-                {
-                    medarbejdere.Add(medarbejder);
-                }
-            }
-
             return new Modul
             {
                 Id = Guid.NewGuid().ToString("N"),
                 Start = dto.Start,
                 End = dto.End,
-                Medarbejdere = medarbejdere,
+                Medarbejder = _context.Medarbejder.Where(n => n.Id == dto.MedarbejderId).FirstOrDefault(),
             };
         }
         private bool ModulExists(string id)

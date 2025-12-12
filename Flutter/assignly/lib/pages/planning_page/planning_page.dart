@@ -49,25 +49,8 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ShiftScheduler(),
-                /*SfCalendar(
-                  view: CalendarView.timelineWeek,
-                  allowedViews: const [
-                    CalendarView.timelineDay,
-                    CalendarView.timelineWeek,
-                    CalendarView.timelineWorkWeek,
-                  ],
-                  showDatePickerButton: true,
-                  resourceViewSettings: const ResourceViewSettings(
-                    displayNameTextStyle: TextStyle(color: Colors.white),
-                    showAvatar: true,
-                    size: 120,
-                    visibleResourceCount: 5,
-                  ),
-                  dataSource: _events,
-                ),
-                */
                 
+                // USE 15% FOR SIDE MENU
                 // SIDE MENU
                 Expanded(
                   child: Container(
@@ -77,7 +60,7 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 60),
+                    margin: const EdgeInsets.only(top: 40, bottom: 40, right: 60),
                     padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                     child: const Column(
                       children: [
@@ -113,6 +96,7 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                   ),
                 ),
 
+                // USE 75% FOR MAIN CONTENT, INCREASE HEIGHT
                 // MAIN CONTENT
                 Expanded(
                   child: Column(
@@ -155,7 +139,7 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                         padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                         child: const Column(
                           children: [
-
+                            ShiftScheduler(),
                           ],
                         ),
                       ),
@@ -163,6 +147,7 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                   ),
                 ),
 
+                // TODO: 10% FOR SIDE BOX
                 // SIDE BOX 
                 Expanded(
                   child: Container(
@@ -172,7 +157,7 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 60),
+                    margin: const EdgeInsets.only(top: 40, bottom: 40, left: 60),
                     padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
                     child: const Column(
                       children: [

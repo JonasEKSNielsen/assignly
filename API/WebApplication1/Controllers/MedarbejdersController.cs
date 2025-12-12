@@ -26,7 +26,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Medarbejder>>> GetMedarbejder()
         {
-            return await _context.Medarbejder.ToListAsync();
+            return await _context.Medarbejder.Include(item => item.Roller).ToListAsync();
         }
 
         // GET: api/Medarbejders/5

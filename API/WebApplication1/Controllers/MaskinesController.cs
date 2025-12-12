@@ -25,7 +25,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Maskine>>> GetMaskine()
         {
-            return await _context.Maskine.ToListAsync();
+            return await _context.Maskine.Include(item => item.Nedetider).Include(item => item.Moduler).Include(item => item.Egenskab).ToListAsync();
         }
 
         // GET: api/Maskines/5
@@ -128,7 +128,7 @@ namespace WebApplication1.Controllers
             }
 
             List<Modul?> moduler = new List<Modul?>();
-            foreach (var item in dto.NedetidIds)
+            foreach (var item in dto.ModuleIds)
             {
                 Modul? modul = _context.Modul.Where(n => n.Id == item).FirstOrDefault();
 

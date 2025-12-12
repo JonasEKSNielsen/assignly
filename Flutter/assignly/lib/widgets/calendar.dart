@@ -1,10 +1,16 @@
 import 'dart:math';
 
+import 'package:assignly/classes/helpers/api.dart';
+import 'package:assignly/classes/objects/maskine.dart';
+import 'package:assignly/classes/objects/modul.dart';
+import 'package:assignly/classes/objects/path.dart';
 import 'package:assignly/widgets/appointmenteditor.dart';
 import 'package:assignly/widgets/pop_up_editor.dart';
 /// Package imports.
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart';
 
 /// Calendar import.
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -30,6 +36,7 @@ class _ShiftSchedulerState<T extends StatefulWidget> extends State<T> {
   final List<String> _colorNames = <String>[];
   final List<String> _timeZoneCollection = <String>[];
   final CalendarController _calendarController = CalendarController();
+  List<Maskine> _maskiner = [];
   final List<CalendarView> _allowedViews = <CalendarView>[
     CalendarView.timelineDay,
     CalendarView.timelineWeek,
@@ -43,15 +50,19 @@ class _ShiftSchedulerState<T extends StatefulWidget> extends State<T> {
   int _selectedColorIndex = 0;
   Appointment? _selectedAppointment;
 
-  @override
-  void initState() {
-    _calendarController.view = CalendarView.timelineWeek;
-    _events = _ShiftDataSource(_shiftCollection, _employeeCollection);
-    _addResourceDetails();
+  Future<void> load() async {
+    await _addResourceDetails();
     _addResources();
     _addSpecialRegions();
     _addAppointmentDetails();
     _addAppointments();
+  }
+
+  @override
+  void initState() {
+    _calendarController.view = CalendarView.timelineWeek;
+    _events = _ShiftDataSource(_shiftCollection, _employeeCollection);
+
     super.initState();
   }
 
@@ -190,15 +201,37 @@ class _ShiftSchedulerState<T extends StatefulWidget> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: _getShiftScheduler(_events, _onCalendarTapped, _onViewChanged),
+    return FutureBuilder(
+      future: load(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return SfCalendar(
+            showDatePickerButton: true,
+            controller: _calendarController,
+            allowedViews: _allowedViews,
+            timeRegionBuilder: _getSpecialRegionWidget,
+            specialRegions: _specialTimeRegions,
+            dataSource: _events,
+            onViewChanged: _onViewChanged,
+            onTap: _onCalendarTapped,
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      }
     );
   }
 
   /// Creates the required resource details as list.
-  void _addResourceDetails() {
-    _nameCollection.add('John');
-    _nameCollection.add('Bryan');
+  Future<void> _addResourceDetails() async {
+    Response response = await API.getRequest(ApiPath.maskine);
+    _maskiner = Maskine.getMaskineFromJson(response.body);
+
+    for (Maskine maskine in _maskiner) {
+      if (maskine.navn != null) {
+        _nameCollection.add(maskine.navn!);
+      }
+    }
   }
 
   /// Creates the required appointment details as a list.
@@ -214,11 +247,11 @@ class _ShiftSchedulerState<T extends StatefulWidget> extends State<T> {
   /// required information.
   void _addResources() {
     final Random random = Random();
-    for (int i = 0; i < _nameCollection.length; i++) {
+    for (int i = 0; i < _maskiner.length; i++) {
       _employeeCollection.add(
         CalendarResource(
-          displayName: _nameCollection[i],
-          id: '000$i',
+          displayName: _maskiner[i].navn ?? 'UNKNOWN',
+          id: _maskiner[i].id ?? '0',
           color: Color.fromRGBO(
             random.nextInt(255),
             random.nextInt(255),
@@ -269,6 +302,25 @@ class _ShiftSchedulerState<T extends StatefulWidget> extends State<T> {
   /// Method that creates the collection the data source for Calendar, with
   /// required information.
   void _addAppointments() {
+    for (Maskine maskine in _maskiner) {
+      for (Modul modul in maskine.moduler) {
+        _shiftCollection.add(
+          Appointment(
+            subject: modul.medarbejder?.navn ?? 'Unassigned',
+            startTime: modul.start ?? DateTime.now(),
+            endTime: modul.end ?? DateTime.now().add(const Duration(hours: 1)),
+            color: HexColor('#${modul.medarbejder?.farve ?? 'a86d32'}'),
+            startTimeZone: '',
+            endTimeZone: '',
+            resourceIds: [maskine.id ?? ''],
+          ), 
+        );
+      }
+    }
+  }
+
+
+  /*void _addAppointments() {
     final Random random = Random();
     for (int i = 0; i < _employeeCollection.length; i++) {
       final List<Object> employeeIds = <Object>[_employeeCollection[i].id];
@@ -310,7 +362,7 @@ class _ShiftSchedulerState<T extends StatefulWidget> extends State<T> {
         }
       }
     }
-  }
+  }*/
 
   Widget _getSpecialRegionWidget(
     BuildContext context,
@@ -333,24 +385,6 @@ class _ShiftSchedulerState<T extends StatefulWidget> extends State<T> {
       );
     }
     return Container(color: details.region.color);
-  }
-
-  /// Returns the Calendar widget based on the properties passed.
-  SfCalendar _getShiftScheduler([
-    CalendarDataSource? calendarDataSource,
-    dynamic calendarTapCallback,
-    dynamic viewChangedCallback,
-  ]) {
-    return SfCalendar(
-      showDatePickerButton: true,
-      controller: _calendarController,
-      allowedViews: _allowedViews,
-      timeRegionBuilder: _getSpecialRegionWidget,
-      specialRegions: _specialTimeRegions,
-      dataSource: calendarDataSource,
-      onViewChanged: viewChangedCallback,
-      onTap: calendarTapCallback,
-    );
   }
 }
 

@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Rolle>>> GetRolle()
         {
-            return await _context.Rolle.ToListAsync();
+            return await _context.Rolle.Include(item => item.Egenskaber).ToListAsync();
         }
 
         // GET: api/Rolles/5

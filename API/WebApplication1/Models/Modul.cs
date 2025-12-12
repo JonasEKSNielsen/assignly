@@ -7,13 +7,13 @@ namespace WebApplication1.Models
 
         public required DateTime Start { get; set; }
         public required DateTime End { get; set; }
-        public List<Medarbejder?> Medarbejdere { get; set; } = new List<Medarbejder?>();
+        public string? MedarbejderId { get; set; }
+        public Medarbejder? Medarbejder { get; set; }
     }
     public class ModulDTO
     {
-
         public required DateTime Start { get; set; }
         public required DateTime End { get; set; }
-        public List<string?> MedarbejderIDs { get; set; } = new List<string?>();
+        public string? MedarbejderId { get; set; }
     }
 }

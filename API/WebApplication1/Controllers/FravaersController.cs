@@ -24,7 +24,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Fravaer>>> GetFravaer()
         {
-            return await _context.Fravaer.ToListAsync();
+            return await _context.Fravaer.Include(item => item.Medarbejder).ToListAsync();
         }
 
         // GET: api/Fravaers/5
