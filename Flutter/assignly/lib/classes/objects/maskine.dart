@@ -1,5 +1,5 @@
 import 'package:assignly/classes/objects/egenskab.dart';
-import 'package:assignly/classes/objects/medarbejder.dart';
+import 'package:assignly/classes/objects/hverdag.dart';
 import 'package:assignly/classes/objects/modul.dart';
 import 'package:assignly/classes/objects/nedetid.dart';
 import 'dart:convert';
@@ -20,13 +20,15 @@ class Maskine {
       if (result != null) {
         if (result is List && result.isNotEmpty) {
           for (var element in result) {
+            // Get egenskab
             Egenskab egenskab = Egenskab(
               titel: element['egenskab']['titel'],
               id: element['egenskab']['id'],
             );
 
+            // Get moduler
             List<Modul> moduler = [];
-            var modulJson = element['moduler'];
+            var modulJson = element['moduler']; 
             if (modulJson != null) {
               if (modulJson is List && modulJson.isNotEmpty) {
                 for (var modul in modulJson) {
@@ -43,22 +45,24 @@ class Maskine {
               }
             }
 
+            // Get nedetider
             List<Nedetid> nedetider = [];
             var nedetidJson = element['nedetider'];
             if (nedetidJson != null && nedetidJson is List && nedetidJson.isNotEmpty) {
               for (var nedetid in nedetidJson) {
-                var a = "";
-                /*Nedetid newNedetid = Nedetid(
+                Nedetid newNedetid = Nedetid(
+                  dag: nedetid['dag'] != null ? HverdagExtension.fromInt(nedetid['dag']) : null,
+                  tidspunkt: nedetid['tidspunkt'],
+                  gentagende: nedetid['gentagende'],
                   start: nedetid['start'] != null ? DateTime.parse(nedetid['start']) : null,
                   end: nedetid['end'] != null ? DateTime.parse(nedetid['end']) : null,
-                  medarbejderId: nedetid['medarbejderId'],
-                  medarbejder: nedetid['medarbejder'] != null ? Medarbejder.getMedarbejderFromJson(jsonDecode(nedetid['medarbejder'])) : null,
                   id: nedetid['id'],
                 );
-                nedetider.add(newNedetid);*/
+                nedetider.add(newNedetid);
               }
             }
 
+            // Create Maskine
             Maskine newMaskine = Maskine(
               id: element['id'],
               navn: element['navn'],
@@ -67,10 +71,12 @@ class Maskine {
               moduler: moduler,
               nedetider: nedetider,
             );
+
+            // Add to list
             maskiner.add(newMaskine);
           }
-
         } else if (!result is List) {
+          // Single object
           maskiner.add(Maskine(
             id: result['id'],
             egenskabId: result['egenskabId'],
@@ -78,11 +84,9 @@ class Maskine {
           ));
         }
       }
-      
       return maskiner;
-    } catch (_) {
-      var a = "";
-    }
+
+    } catch (_) {}
     return [];
   }
 }

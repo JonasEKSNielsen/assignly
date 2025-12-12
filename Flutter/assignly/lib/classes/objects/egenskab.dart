@@ -1,15 +1,14 @@
-import 'dart:convert';
-
 class Egenskab {
   String? id, titel;
 
   Egenskab({required this.id, required this.titel});
 
-  static Egenskab? getEgenskabFromJson(String response) {
+  static Egenskab? getEgenskabFromJsonMap(Map<String, dynamic> response) {
     try {
-      final data = jsonDecode(response);
-      final results = data;
-
+      return Egenskab(
+        id: response['id'],
+        titel: response['titel'],
+      );
     } catch (_) {
     }
     return null;

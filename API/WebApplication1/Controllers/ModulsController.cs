@@ -24,7 +24,10 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Modul>>> GetModul()
         {
-            return await _context.Modul.Include(item => item.Medarbejder).ToListAsync();
+            return await _context.Modul
+                .Include(item => item.Medarbejder)
+                    .ThenInclude(item => item.Roller)
+                        .ThenInclude(item => item.Egenskaber).ToListAsync();
         }
 
         // GET: api/Moduls/5

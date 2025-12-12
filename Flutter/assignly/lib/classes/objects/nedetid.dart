@@ -1,15 +1,6 @@
 // ignore_for_file: constant_identifier_names
-import 'dart:convert';
+import 'package:assignly/classes/objects/hverdag.dart';
 
-enum Hverdag {
-  Monday,
-  Tuesday,
-  Wednesday,
-  Thursday,
-  Friday,
-  Saturday,
-  Sunday
-}
 
 class Nedetid {
   String? id;
@@ -20,13 +11,8 @@ class Nedetid {
   DateTime? start;
   DateTime? end;
 
-  static Nedetid getNedetidFromJson(String response) {
-    try {
-      final data = jsonDecode(response);
-      final results = data;
+  Nedetid({required this.id, required this.dag, required this.tidspunkt, required this.gentagende, required this.start, required this.end});
 
-    } catch (_) {
-    }
-    return Nedetid();
-  }
+  
+
 }

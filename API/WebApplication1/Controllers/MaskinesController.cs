@@ -25,7 +25,13 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Maskine>>> GetMaskine()
         {
-            return await _context.Maskine.Include(item => item.Nedetider).Include(item => item.Moduler).Include(item => item.Egenskab).ToListAsync();
+            return await _context.Maskine
+                .Include(item => item.Nedetider)
+                .Include(item => item.Moduler)
+                    .ThenInclude(item => item.Medarbejder)
+                        .ThenInclude(item => item.Roller)
+                            .ThenInclude(item => item.Egenskaber)
+                .Include(item => item.Egenskab).ToListAsync();
         }
 
         // GET: api/Maskines/5

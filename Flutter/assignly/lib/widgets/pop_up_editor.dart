@@ -1,4 +1,3 @@
-import 'package:assignly/widgets/appointmenteditor.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -20,7 +19,7 @@ class PopUpAppointmentEditor extends StatefulWidget {
     this.colorNames,
     this.selectedAppointment,
     this.timeZoneCollection,
-    this.visibleDates,
+    this.visibleDates, {super.key}
   );
 
   /// New appointment value.
@@ -104,10 +103,6 @@ class _PopUpAppointmentEditorState extends State<PopUpAppointmentEditor> {
     _resourceIds = widget.selectedAppointment.resourceIds?.sublist(0);
     _startTime = TimeOfDay(hour: _startDate.hour, minute: _startDate.minute);
     _endTime = TimeOfDay(hour: _endDate.hour, minute: _endDate.minute);
-    _selectedResources = getSelectedResources(
-      _resourceIds,
-      widget.events.resources,
-    );
   }
 
   @override

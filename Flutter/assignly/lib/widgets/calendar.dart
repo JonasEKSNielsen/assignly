@@ -164,32 +164,31 @@ class _ShiftSchedulerState<T extends StatefulWidget> extends State<T> {
                       ? (250)
                       : 450,
                   child: Card(
-                      margin: EdgeInsets.zero,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                      ),
-                      child: isAppointmentTapped
-                          ? displayAppointmentDetails(
-                              context,
-                              targetElement,
-                              selectedDate,
-                              _selectedAppointment!,
-                              _colorCollection,
-                              _colorNames,
-                              _events,
-                              _timeZoneCollection,
-                              _visibleDates,
-                            )
-                          : PopUpAppointmentEditor(
-                              newAppointment,
-                              appointment,
-                              _events,
-                              _colorCollection,
-                              _colorNames,
-                              _selectedAppointment!,
-                              _timeZoneCollection,
-                              _visibleDates,
-                            ),
+                    margin: EdgeInsets.zero,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    ),
+                    child: isAppointmentTapped ? displayAppointmentDetails(
+                      context,
+                      targetElement,
+                      selectedDate,
+                      _selectedAppointment!,
+                      _colorCollection,
+                      _colorNames,
+                      _events,
+                      _timeZoneCollection,
+                      _visibleDates,
+                    )
+                    : PopUpAppointmentEditor(
+                      newAppointment,
+                      appointment,
+                      _events,
+                      _colorCollection,
+                      _colorNames,
+                      _selectedAppointment!,
+                      _timeZoneCollection,
+                      _visibleDates,
+                    ),
                   ),
                 ),
               ),
