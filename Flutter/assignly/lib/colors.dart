@@ -8,11 +8,6 @@ LinearGradient btnGradient = const LinearGradient(
     begin: Alignment.bottomCenter,
     end: Alignment.topCenter,
   ),
-  clickedGradient = const LinearGradient(
-    colors: [Color(0xFFFF8800), Color(0xFFFFBB33)],
-    begin: Alignment.bottomCenter,
-    end: Alignment.topCenter,
-  ),
   microsoftGradient = const LinearGradient(
     colors: [Color(0xFF1565C0), Color(0xFF00AEEF)],
     begin: Alignment.bottomCenter,

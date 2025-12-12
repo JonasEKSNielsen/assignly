@@ -3,9 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart' show DateFormat;
-
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-// ignore: depend_on_referenced_packages
 import 'package:syncfusion_flutter_core/core.dart';
 
 

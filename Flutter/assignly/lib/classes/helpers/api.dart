@@ -1,3 +1,4 @@
+import 'package:assignly/classes/objects/modul.dart';
 import 'package:assignly/classes/objects/path.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -9,10 +10,21 @@ class API {
   // TODO: USE TEST
   static const String _testUrl = 'https://assignlydbapi.mikkeldamgaard.dk/api/';
 
+  static Map<String, dynamic> createModulPostEnvelope(Modul item) {
+    var envelope = {
+      'start': item.start?.toIso8601String(),
+      'end': item.end?.toIso8601String(),
+    };
 
+    if (item.medarbejderId != null) {
+      envelope['medarbejderId'] = item.medarbejderId;
+    }
+    
+    return envelope;
+  }
 
   // Post Request
-  static Future<http.Response> postRequest(String envelope, ApiPath action) async {
+  static Future<http.Response> postRequest(Map<String, dynamic> envelope, ApiPath action) async {
     // Create header with action
     final header = {
       'Content-Type': 'application/json',
@@ -41,5 +53,5 @@ class API {
       headers: header,
     );
     return temp;
-  }
+  }  
 }
