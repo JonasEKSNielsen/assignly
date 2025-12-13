@@ -6,7 +6,7 @@ class Modul {
   DateTime? start, end;
   Medarbejder? medarbejder;
 
-  Modul({required this.id, required this.start, required this.end, this.medarbejderId, this.medarbejder});
+  Modul({this.id, required this.start, required this.end, this.medarbejderId, this.medarbejder});
 
   static Modul? getModulFromJsonMap(Map<String, dynamic> response) {
     try {
