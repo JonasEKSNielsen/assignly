@@ -34,4 +34,5 @@ var yellow = const Color(0xCCFFFF00),
     ocean2 = const Color(0xFF005A5B),
     ocean3 = const Color(0xFF007369),
     ocean4 = const Color(0xFF008C72),
-    ocean5 = const Color(0xFF02A676);
+    ocean5 = const Color(0xFF02A676),
+    background = const Color.fromARGB(237, 231, 231, 231);

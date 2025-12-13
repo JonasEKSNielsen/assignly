@@ -1,7 +1,10 @@
+
+import 'package:assignly/colors.dart';
 import 'package:assignly/pages/planning_page/planning_bloc.dart';
 import 'package:assignly/widgets/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:assignly/widgets/topmenu.dart';
 
 class PlanningPage extends StatefulWidget {
   const PlanningPage({super.key});
@@ -13,7 +16,7 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final FocusNode focus = FocusNode();
-  
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {}
 
@@ -31,157 +34,125 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
     super.initState();
     WidgetsBinding.instance.addObserver(this);
   }
-  
 
   @override
   Widget build(BuildContext context) => GestureDetector(
-    onTap: () => FocusScope.of(context).unfocus(),
-    child: Scaffold(
-    resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text("Vagtplan"),
-      ),
-
-      body: BlocProvider(
-        create: (_) => PlanningBloc(),
-        child: BlocBuilder<PlanningBloc, PlanningState>(
-          builder: (context, state) => SingleChildScrollView(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                
-                // USE 15% FOR SIDE MENU
-                // SIDE MENU
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: const EdgeInsets.only(top: 40, bottom: 40, right: 60),
-                    padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                    child: const Column(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: TopMenu(),
+          backgroundColor: background,
+          body: BlocProvider(
+            create: (_) => PlanningBloc(),
+            child: BlocBuilder<PlanningBloc, PlanningState>(
+              builder: (context, state) => LayoutBuilder(
+                // FIX: LayoutBuilder must use `builder:` to access viewport constraints
+                builder: (context, constraints) => ConstrainedBox(
+                  // Make the Row at least as tall as the viewport
+                  constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                  child: IntrinsicHeight(
+                    // Make children match the tallest height => full-height sidebars
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch, // stretch children vertically
                       children: [
-                        // Title
-                        Text(
-                          "abc", 
-                          style: TextStyle(
-                            fontSize: 30, 
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-
-                        Text(
-                          "cba", 
-                          style: TextStyle(
-                            fontSize: 30, 
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-
-                        Text(
-                          "cda", 
-                          style: TextStyle(
-                            fontSize: 30, 
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // USE 75% FOR MAIN CONTENT, INCREASE HEIGHT
-                // MAIN CONTENT
-                Expanded(
-                  child: Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
-                        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 60),
-                        child: const Column(
-                          children: [
-                            // Title
-                            Text(
-                              "SKEMA", 
-                              style: TextStyle(
-                                fontSize: 46, 
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold
-                              ),
+                        // LEFT SIDEBAR (≈15%)
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: white,
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(5),
                             ),
-                      
-                            SizedBox(height: 10),
-                          ],
-                        ),
-                      ),
-
-
-                      Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
-                        padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                        child: const Column(
-                          children: [
-                            ShiftScheduler(),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // TODO: 10% FOR SIDE BOX
-                // SIDE BOX 
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: const EdgeInsets.only(top: 40, bottom: 40, left: 60),
-                    padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-                    child: const Column(
-                      children: [
-                        // Title
-                        Text(
-                          "Vagtplan", 
-                          style: TextStyle(
-                            fontSize: 46, 
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold
+                            margin: const EdgeInsets.only(
+                                top: 20, bottom: 20, left: 20, right: 20),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 40, horizontal: 10),
+                            child: const Column(
+                              children: [
+                                // Title
+                                Text(
+                                  "Medarbejdere:",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 10),
+                              ],
+                            ),
                           ),
                         ),
-                  
-                        SizedBox(height: 10),
+                        // MIDDLE CONTENT — keeps top card, makes calendar fill the rest
+                        Expanded(
+                          flex: 7,
+                          child: Column(
+                            children: [
+
+                              // Calendar area fills the remaining vertical space
+                              Expanded(
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: white,
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  margin: const EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
+                                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+
+                                  // Use LayoutBuilder to give ShiftScheduler the exact remaining height
+                                  child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                      return SizedBox(
+                                        width: double.infinity,
+                                        height: constraints.maxHeight,
+                                        child: const ShiftScheduler(), // ⬅️ now fills the rest cleanly
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // RIGHT SIDE BOX (≈15%)
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: white,
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            margin: const EdgeInsets.only(
+                                top: 20, bottom: 100, left: 20, right: 20),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 40, horizontal: 10),
+                            child: const Column(
+                              children: [
+                                // Title
+                                Text(
+                                  "Automatisk Planlægning",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 10),
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-
-              ],
+              ),
             ),
           ),
         ),
-      ),
-    ),
-  );
+      );
 }
