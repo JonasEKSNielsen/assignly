@@ -18,6 +18,8 @@
         public required bool Gentagende { get; set; }
         public required DateTime Start { get; set; }
         public required DateTime End { get; set; }
+        public required string MaskineId { get; set; }
+        public Maskine? Maskine { get; set; }
     }
     // UDEN ID
     public class NedetidDTO
@@ -27,5 +29,6 @@
         public required bool Gentagende { get; set; }
         public required DateTime Start { get; set; }
         public required DateTime End { get; set; }
+        public required string MaskineId { get; set; }
     }
 }

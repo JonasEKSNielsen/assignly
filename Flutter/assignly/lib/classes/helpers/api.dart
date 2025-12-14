@@ -19,6 +19,10 @@ class API {
     if (item.medarbejderId != null) {
       envelope['medarbejderId'] = item.medarbejderId;
     }
+
+    if (item.maskineId != null) {
+      envelope['maskineId'] = item.maskineId;
+    }
     
     return envelope;
   }

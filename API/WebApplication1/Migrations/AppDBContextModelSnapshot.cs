@@ -132,6 +132,7 @@ namespace WebApplication1.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("MaskineId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("MedarbejderId")
@@ -164,6 +165,7 @@ namespace WebApplication1.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("MaskineId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("Start")
@@ -229,22 +231,30 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Modul", b =>
                 {
-                    b.HasOne("WebApplication1.Models.Maskine", null)
-                        .WithMany("Moduler")
-                        .HasForeignKey("MaskineId");
+                    b.HasOne("WebApplication1.Models.Maskine", "Maskine")
+                        .WithMany()
+                        .HasForeignKey("MaskineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebApplication1.Models.Medarbejder", "Medarbejder")
                         .WithMany()
                         .HasForeignKey("MedarbejderId");
+
+                    b.Navigation("Maskine");
 
                     b.Navigation("Medarbejder");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Nedetid", b =>
                 {
-                    b.HasOne("WebApplication1.Models.Maskine", null)
-                        .WithMany("Nedetider")
-                        .HasForeignKey("MaskineId");
+                    b.HasOne("WebApplication1.Models.Maskine", "Maskine")
+                        .WithMany()
+                        .HasForeignKey("MaskineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Maskine");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Rolle", b =>
@@ -252,13 +262,6 @@ namespace WebApplication1.Migrations
                     b.HasOne("WebApplication1.Models.Medarbejder", null)
                         .WithMany("Roller")
                         .HasForeignKey("MedarbejderId");
-                });
-
-            modelBuilder.Entity("WebApplication1.Models.Maskine", b =>
-                {
-                    b.Navigation("Moduler");
-
-                    b.Navigation("Nedetider");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Medarbejder", b =>

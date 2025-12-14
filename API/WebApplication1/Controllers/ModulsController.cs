@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Humanizer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +46,25 @@ namespace WebApplication1.Controllers
             return modul;
         }
 
+        // GET: api/Moduls/GetModulFromMaskine/5
+        [HttpGet("GetModulFromMaskine/{id}")]
+        public async Task<ActionResult<IEnumerable<Modul>>> GetModulFromMaskine(string id)
+        {
+            var allModul = await _context.Modul
+                .Include(item => item.Medarbejder)
+                    .ThenInclude(item => item.Roller)
+                        .ThenInclude(item => item.Egenskaber).ToListAsync();
+
+            var finalModuler = allModul.Where(item => item.MaskineId == id).ToList();
+
+            if (finalModuler == null)
+            {
+                return NotFound();
+            }
+
+            return finalModuler;
+        }
+
         // PUT: api/Moduls/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -81,6 +102,7 @@ namespace WebApplication1.Controllers
         public async Task<ActionResult<Modul>> PostModul(ModulDTO dto)
         {
             Modul modul = MapDTOToModul(dto);
+            
 
             _context.Modul.Add(modul);
             try
@@ -124,7 +146,10 @@ namespace WebApplication1.Controllers
                 Id = Guid.NewGuid().ToString("N"),
                 Start = dto.Start,
                 End = dto.End,
+                MedarbejderId = dto.MedarbejderId,
                 Medarbejder = _context.Medarbejder.Where(n => n.Id == dto.MedarbejderId).FirstOrDefault(),
+                MaskineId = dto.MaskineId,
+                Maskine = _context.Maskine.Where(n => n.Id == dto.MaskineId).FirstOrDefault(),
             };
         }
         private bool ModulExists(string id)

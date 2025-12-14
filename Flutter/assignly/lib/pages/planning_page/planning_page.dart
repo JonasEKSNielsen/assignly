@@ -2,9 +2,11 @@
 import 'package:assignly/colors.dart';
 import 'package:assignly/pages/planning_page/planning_bloc.dart';
 import 'package:assignly/widgets/calendar.dart';
+import 'package:assignly/classes/helpers/scheduler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:assignly/widgets/topmenu.dart';
+import 'package:intl/intl.dart';
 
 class PlanningPage extends StatefulWidget {
   const PlanningPage({super.key});
@@ -16,6 +18,7 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final FocusNode focus = FocusNode();
+  DateTime? _scheduleDate;
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {}
@@ -34,6 +37,27 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
     super.initState();
     WidgetsBinding.instance.addObserver(this);
   }
+
+  Future<void> _runScheduler() async {
+    setState(() {});
+    try {
+      final today = DateTime.now();
+      final sched = Scheduler();
+      await sched.scheduleUnassignedForDate(
+        _scheduleDate ?? DateTime(today.year, today.month, today.day),
+        durationMinutes: 60,
+        dryRun: false,
+        // 1000 GANGE
+        iterations: 1000,
+        onLog: (s) {
+          setState(() {});
+        },
+      );
+    } finally {
+      setState(() {});
+    }
+  }
+  
 
   @override
   Widget build(BuildContext context) => GestureDetector(
@@ -131,10 +155,10 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                                 top: 20, bottom: 100, left: 20, right: 20),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 40, horizontal: 10),
-                            child: const Column(
+                            child: Column(
                               children: [
                                 // Title
-                                Text(
+                                const Text(
                                   "Automatisk Planlægning",
                                   style: TextStyle(
                                       fontSize: 20,
@@ -142,6 +166,25 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                                       fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(height: 10),
+
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    await _runScheduler();
+                                  }, 
+                                  child: const Text("KØR LORTET"),
+                                ),
+
+                                if (_scheduleDate != null)
+                                  Text(DateFormat.yMMMd().format(_scheduleDate!)),
+
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    _scheduleDate = await showDatePicker(context: context, firstDate: DateTime.now(), lastDate: DateTime.now().add(const Duration(days: 1000)));
+                                    setState(() {});
+                                  }, 
+                                  child: const Text("VÆLG DATO"),
+                                )
+
                               ],
                             ),
                           ),

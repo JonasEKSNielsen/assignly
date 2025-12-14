@@ -124,6 +124,8 @@ namespace WebApplication1.Controllers
                 Gentagende = dto.Gentagende,
                 Start = dto.Start,
                 End = dto.End,
+                MaskineId = dto.MaskineId,
+                Maskine = _context.Maskine.Where(n => n.Id == dto.MaskineId).FirstOrDefault(),
             };
         }
         private bool NedetidExists(string id)

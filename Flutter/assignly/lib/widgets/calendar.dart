@@ -300,21 +300,22 @@ class _ShiftSchedulerState<T extends StatefulWidget> extends State<T> {
 
   /// Method that creates the collection the data source for Calendar, with
   /// required information.
-  void _addAppointments() {
-    for (Maskine maskine in _maskiner) {
-      for (Modul modul in maskine.moduler) {
-        _shiftCollection.add(
-          Appointment(
-            subject: modul.medarbejder?.navn ?? 'Unassigned',
-            startTime: modul.start ?? DateTime.now(),
-            endTime: modul.end ?? DateTime.now().add(const Duration(hours: 1)),
-            color: HexColor('#${modul.medarbejder?.farve ?? 'a86d32'}'),
-            startTimeZone: '',
-            endTimeZone: '',
-            resourceIds: [maskine.id ?? ''],
-          ), 
-        );
-      }
+  void _addAppointments() async {
+    var resp = await API.getRequest(ApiPath.modul);
+    List<Modul> allModul = Modul.getModulFromJson(resp.body);
+
+    for (Modul modul in allModul) {
+      _shiftCollection.add(
+        Appointment(
+          subject: modul.medarbejder?.navn ?? 'Unassigned',
+          startTime: modul.start ?? DateTime.now(),
+          endTime: modul.end ?? DateTime.now().add(const Duration(hours: 1)),
+          color: HexColor('#${modul.medarbejder?.farve ?? 'a86d32'}'),
+          startTimeZone: '',
+          endTimeZone: '',
+          resourceIds: [modul.maskineId ?? ''],
+        ), 
+      );
     }
   }
 

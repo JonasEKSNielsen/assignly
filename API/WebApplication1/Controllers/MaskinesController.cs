@@ -25,13 +25,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Maskine>>> GetMaskine()
         {
-            return await _context.Maskine
-                .Include(item => item.Nedetider)
-                .Include(item => item.Moduler)
-                    .ThenInclude(item => item.Medarbejder)
-                        .ThenInclude(item => item.Roller)
-                            .ThenInclude(item => item.Egenskaber)
-                .Include(item => item.Egenskab).ToListAsync();
+            return await _context.Maskine.Include(item => item.Egenskab).ToListAsync();
         }
 
         // GET: api/Maskines/5
@@ -123,27 +117,6 @@ namespace WebApplication1.Controllers
         }
         private Maskine MapDTOToMaskine(MaskineDTO dto)
         {
-            List<Nedetid?> nedetider = new List<Nedetid?>();
-            foreach (var item in dto.NedetidIds)
-            {
-                Nedetid? nedetid = _context.Nedetid.Where(n => n.Id == item).FirstOrDefault();
-
-                if (nedetid != null) {
-                    nedetider.Add(nedetid);
-                }
-            }
-
-            List<Modul?> moduler = new List<Modul?>();
-            foreach (var item in dto.ModuleIds)
-            {
-                Modul? modul = _context.Modul.Where(n => n.Id == item).FirstOrDefault();
-
-                if (modul != null)
-                {
-                    moduler.Add(modul);
-                }
-            }
-
             Egenskab? egenskab = _context.Egenskab.Where(e => e.Id == dto.EgenskabId).FirstOrDefault();
 
             return new Maskine
@@ -152,8 +125,6 @@ namespace WebApplication1.Controllers
                 Navn = dto.Navn,
                 EgenskabId = dto.EgenskabId,
                 Egenskab = egenskab,
-                Moduler = moduler,
-                Nedetider = nedetider,
             };
         }
 

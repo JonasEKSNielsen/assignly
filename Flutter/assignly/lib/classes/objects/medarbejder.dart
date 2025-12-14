@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:assignly/classes/objects/fravaer.dart';
 import 'package:assignly/classes/objects/rolle.dart';
 
@@ -26,6 +28,35 @@ class Medarbejder {
     this.fravaer = const [],
     this.roller = const [],
   });
+
+  static List<Medarbejder> getMedarbejderFromJson(String response) {
+    try {
+      List<Medarbejder> medarbejdere = [];
+      
+      final result = jsonDecode(response);
+      if (result != null) {
+        if (result is List && result.isNotEmpty) {
+          for (var element in result) {
+            Medarbejder? newMedarbejder = getMedarbejderFromJsonMap(element);
+            if (newMedarbejder != null) {
+              medarbejdere.add(newMedarbejder);
+            }
+          }
+          return medarbejdere;
+        } else if (result is Map<String, dynamic>) {
+          Medarbejder? newMedarbejder = getMedarbejderFromJsonMap(result);
+          if (newMedarbejder != null) {
+            medarbejdere.add(newMedarbejder);
+            return medarbejdere;
+          } else {
+            return [];
+          }
+        }
+      }
+    } catch (_) {}
+
+    return [];
+  }
 
   static Medarbejder? getMedarbejderFromJsonMap(Map<String, dynamic> response) {
     try {
