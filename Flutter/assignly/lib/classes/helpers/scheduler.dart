@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:assignly/classes/helpers/api.dart';
+import 'package:assignly/classes/helpers/notifiers.dart';
 import 'package:assignly/classes/objects/maskine.dart';
 import 'package:assignly/classes/objects/modul.dart';
 import 'package:assignly/classes/objects/medarbejder.dart';
@@ -406,6 +407,7 @@ class Scheduler {
         }
       }
     }
+    notifyModulesChanged();
   }
 }
 

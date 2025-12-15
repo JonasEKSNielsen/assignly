@@ -12,18 +12,11 @@ class TopMenu extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: ocean1,
       iconTheme: const IconThemeData(color: Colors.white),
       actions: [
-        TextButton(
-          onPressed: () {},
-          child: const Text('Planning', style: TextStyle(color: Colors.white)),
-        ),
-        TextButton(
-          onPressed: () {},
-          child: const Text('Reporting', style: TextStyle(color: Colors.white)),
-        ),
-        const SizedBox(width: 8),
         ElevatedButton(
-          onPressed: () {},
-          child: const Text('Sign in'),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Log ud'),
         ),
       ],
     );

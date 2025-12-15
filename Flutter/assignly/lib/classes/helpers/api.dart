@@ -36,7 +36,7 @@ class API {
     };
 
     // Post the request
-    var temp = http.post(
+    final temp = http.post(
       Uri.parse((!kReleaseMode ? _url : _testUrl) + action.value),
       headers: header,
       body: json.encode(envelope),

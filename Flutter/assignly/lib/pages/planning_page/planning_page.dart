@@ -1,4 +1,7 @@
 
+import 'package:assignly/classes/helpers/api.dart';
+import 'package:assignly/classes/objects/medarbejder.dart';
+import 'package:assignly/classes/objects/path.dart';
 import 'package:assignly/colors.dart';
 import 'package:assignly/pages/planning_page/planning_bloc.dart';
 import 'package:assignly/widgets/calendar.dart';
@@ -17,8 +20,9 @@ class PlanningPage extends StatefulWidget {
 class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  List<Medarbejder> medarbejdere = [];
   final FocusNode focus = FocusNode();
-  DateTime? _scheduleDate;
+  DateTime _scheduleDate = DateTime.now(); 
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {}
@@ -41,10 +45,9 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
   Future<void> _runScheduler() async {
     setState(() {});
     try {
-      final today = DateTime.now();
       final sched = Scheduler();
       await sched.scheduleUnassignedForDate(
-        _scheduleDate ?? DateTime(today.year, today.month, today.day),
+        _scheduleDate,
         durationMinutes: 60,
         dryRun: false,
         // 1000 GANGE
@@ -57,29 +60,34 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
       setState(() {});
     }
   }
+
+  Future<void> load() async {
+    var resp = await API.getRequest(ApiPath.medarbejder);
+    medarbejdere = Medarbejder.getMedarbejderFromJson(resp.body);
+  }
   
 
   @override
-  Widget build(BuildContext context) => GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
+  Widget build(BuildContext context) => FutureBuilder(
+    future: load(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.done) {
+        return Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: TopMenu(),
+          appBar: const TopMenu(),
           backgroundColor: background,
           body: BlocProvider(
             create: (_) => PlanningBloc(),
             child: BlocBuilder<PlanningBloc, PlanningState>(
               builder: (context, state) => LayoutBuilder(
-                // FIX: LayoutBuilder must use `builder:` to access viewport constraints
                 builder: (context, constraints) => ConstrainedBox(
-                  // Make the Row at least as tall as the viewport
                   constraints: BoxConstraints(minHeight: constraints.maxHeight),
                   child: IntrinsicHeight(
-                    // Make children match the tallest height => full-height sidebars
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch, // stretch children vertically
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        // LEFT SIDEBAR (≈15%)
+        
+                        // LEFT SIDEBAR
                         Expanded(
                           flex: 2,
                           child: Container(
@@ -89,32 +97,33 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                               border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            margin: const EdgeInsets.only(
-                                top: 20, bottom: 20, left: 20, right: 20),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 40, horizontal: 10),
-                            child: const Column(
+                            margin: const EdgeInsets.all(20),
+                            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 10),
+                            child: Column(
                               children: [
                                 // Title
-                                Text(
+                                const Text(
                                   "Medarbejdere:",
                                   style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
+                                for (Medarbejder medarbejder in medarbejdere)
+                                  Text('${medarbejder.navn} - Antal Timer: ${medarbejder.arbejdstimerOmUgen}')
                               ],
                             ),
                           ),
                         ),
-                        // MIDDLE CONTENT — keeps top card, makes calendar fill the rest
+                        
+                        
+                        // MIDDLE CONTENT
                         Expanded(
                           flex: 7,
                           child: Column(
                             children: [
-
-                              // Calendar area fills the remaining vertical space
                               Expanded(
                                 child: Container(
                                   alignment: Alignment.center,
@@ -125,14 +134,13 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                                   ),
                                   margin: const EdgeInsets.only(top: 20, bottom: 20, left: 5, right: 5),
                                   padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-
-                                  // Use LayoutBuilder to give ShiftScheduler the exact remaining height
+        
                                   child: LayoutBuilder(
                                     builder: (context, constraints) {
                                       return SizedBox(
                                         width: double.infinity,
                                         height: constraints.maxHeight,
-                                        child: const ShiftScheduler(), // ⬅️ now fills the rest cleanly
+                                        child: const ShiftScheduler(),
                                       );
                                     },
                                   ),
@@ -141,7 +149,8 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                             ],
                           ),
                         ),
-                        // RIGHT SIDE BOX (≈15%)
+        
+                        // RIGHT SIDE BOX
                         Expanded(
                           flex: 2,
                           child: Container(
@@ -151,40 +160,43 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
                               border: Border.all(color: Colors.grey),
                               borderRadius: BorderRadius.circular(5),
                             ),
-                            margin: const EdgeInsets.only(
-                                top: 20, bottom: 100, left: 20, right: 20),
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 40, horizontal: 10),
+                            margin: const EdgeInsets.only(top: 20, bottom: 100, left: 20, right: 20),
+                            padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 10),
                             child: Column(
                               children: [
                                 // Title
                                 const Text(
                                   "Automatisk Planlægning",
                                   style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 20,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                SizedBox(height: 10),
-
+                                const SizedBox(height: 10),
+        
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    DateTime? newDate = await showDatePicker(context: context, firstDate: DateTime.now(), lastDate: DateTime.now().add(const Duration(days: 1000)));
+                                    if (newDate != null) {
+                                      _scheduleDate = newDate;
+                                    }
+        
+                                    // TODO: ADD ERROR MESSAGE
+                                    setState(() {});
+                                  }, 
+                                  child: const Text("VÆLG DATO"),
+                                ),
+        
+                                const SizedBox(height: 10),
+                                Text("Generer skema for: ${DateFormat.yMMMd().format(_scheduleDate)}"),
+                                const SizedBox(height: 10),
                                 ElevatedButton(
                                   onPressed: () async {
                                     await _runScheduler();
                                   }, 
-                                  child: const Text("KØR LORTET"),
+                                  child: const Text("GENERER SKEMA"),
                                 ),
-
-                                if (_scheduleDate != null)
-                                  Text(DateFormat.yMMMd().format(_scheduleDate!)),
-
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    _scheduleDate = await showDatePicker(context: context, firstDate: DateTime.now(), lastDate: DateTime.now().add(const Duration(days: 1000)));
-                                    setState(() {});
-                                  }, 
-                                  child: const Text("VÆLG DATO"),
-                                )
-
                               ],
                             ),
                           ),
@@ -196,6 +208,10 @@ class _PlanningPageState extends State<PlanningPage> with WidgetsBindingObserver
               ),
             ),
           ),
-        ),
-      );
+        );
+      } else {
+        return const Center(child: CircularProgressIndicator());
+      }
+    }
+  );
 }

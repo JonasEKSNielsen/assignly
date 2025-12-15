@@ -2,9 +2,7 @@ import 'dart:core';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:syncfusion_flutter_core/core.dart';
 
 
 /// Render the widget of appointment editor Calendar.
@@ -151,21 +149,6 @@ class _CalendarAppointmentEditorState<T extends StatefulWidget> extends State<T>
   }
 }
 
-/// Signature for callback which reports the picker value changed.
-typedef PickerChanged =
-    void Function(PickerChangedDetails pickerChangedDetails);
-
-/// Details for the [PickerChanged].
-class PickerChangedDetails {
-  PickerChangedDetails({
-    this.index = -1,
-    this.resourceId,
-  });
-
-  final int index;
-  final Object? resourceId;
-}
-
 /// An object to set the appointment collection data source to collection, and
 /// allows to add, remove or reset the appointment collection.
 class _DataSource extends CalendarDataSource {
@@ -175,145 +158,4 @@ class _DataSource extends CalendarDataSource {
 
   @override
   List<dynamic> get appointments => source;
-}
-
-/// Formats the tapped appointment time text, to display on the pop-up view.
-String _getAppointmentTimeText(Appointment selectedAppointment) {
-  if (selectedAppointment.isAllDay) {
-    if (isSameDate(
-      selectedAppointment.startTime,
-      selectedAppointment.endTime,
-    )) {
-      return DateFormat('EEEE, MMM dd').format(selectedAppointment.startTime);
-    }
-    return '${DateFormat('EEEE, MMM dd').format(selectedAppointment.startTime)} - ${DateFormat('EEEE, MMM dd').format(selectedAppointment.endTime)}';
-  } else if (selectedAppointment.startTime.day !=
-          selectedAppointment.endTime.day ||
-      selectedAppointment.startTime.month !=
-          selectedAppointment.endTime.month ||
-      selectedAppointment.startTime.year != selectedAppointment.endTime.year) {
-    String endFormat = 'EEEE, ';
-    if (selectedAppointment.startTime.month !=
-        selectedAppointment.endTime.month) {
-      endFormat += 'MMM';
-    }
-
-    endFormat += ' dd hh:mm a';
-    return '${DateFormat(
-          'EEEE, MMM dd hh:mm a',
-        ).format(selectedAppointment.startTime)} - ${DateFormat(endFormat).format(selectedAppointment.endTime)}';
-  } else {
-    return '${DateFormat(
-          'EEEE, MMM dd hh:mm a',
-        ).format(selectedAppointment.startTime)} - ${DateFormat('hh:mm a').format(selectedAppointment.endTime)}';
-  }
-}
-
-/// Displays the tapped appointment details in a pop-up view.
-Widget displayAppointmentDetails(
-  BuildContext context,
-  CalendarElement targetElement,
-  DateTime selectedDate,
-  Appointment selectedAppointment,
-  List<Color> colorCollection,
-  List<String> colorNames,
-  CalendarDataSource events,
-  List<String> timeZoneCollection,
-  List<DateTime> visibleDates,
-) {
-  const Color defaultColor = Colors.black54;
-  const Color defaultTextColor = Colors.black87;
-  return ListView(
-    padding: EdgeInsets.zero,
-    children: <Widget>[
-
-      // TOP BAR WITH ACTION BUTTONS
-      ListTile(
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-
-            // EDIT BUTTON
-            IconButton(
-              splashRadius: 20,
-              icon: const Icon(Icons.edit, color: defaultColor),
-              onPressed: () {
-                // ADD EDITOR
-                Navigator.pop(context);
-              },
-            ),
-
-            // DELETE BUTTON
-            IconButton(
-              icon: const Icon(Icons.delete, color: defaultColor),
-              splashRadius: 20,
-              onPressed: () {
-                // ADD DELETE CONFIRMATION
-                Navigator.pop(context);
-              },
-            ),
-
-            // CLOSE BUTTON
-            IconButton(
-              splashRadius: 20,
-              icon: const Icon(Icons.close, color: defaultColor),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
-      
-      // TITLE AND TIME TEXT
-      ListTile(
-        leading: Icon(Icons.lens, color: selectedAppointment.color, size: 20),
-        title: Text(
-          selectedAppointment.subject,
-          style: const TextStyle( 
-            fontSize: 20,
-            color: defaultTextColor,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        subtitle: Padding(
-          padding: const EdgeInsets.only(top: 5),
-          child: Text(
-            _getAppointmentTimeText(selectedAppointment),
-            style: const TextStyle(
-              fontSize: 15,
-              color: defaultTextColor,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ),
-      ),
-
-      // MEDARBEJDERE
-      ListTile(
-          leading: const Icon(Icons.people, size: 20, color: defaultColor),
-          title: DropdownButton<String>(
-            value: selectedAppointment.resourceIds?.isNotEmpty == true
-                ? selectedAppointment.resourceIds!.first.toString()
-                : null,
-            hint: const Text(
-              'Select Medarbejder',
-              style: TextStyle(fontSize: 15),
-            ),
-            items: events.resources?.map((resource) {
-              return DropdownMenuItem<String>(
-                value: resource.id.toString(),
-                child: Text(
-                  resource.displayName,
-                  style: const TextStyle(fontSize: 15),
-                ),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {},
-          ),
-        ),
-    ],
-  );
 }

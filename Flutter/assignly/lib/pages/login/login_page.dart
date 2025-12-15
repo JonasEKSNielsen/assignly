@@ -1,6 +1,5 @@
 // Removed unused imports: dart:convert, API, modul, path
 import 'package:assignly/colors.dart';
-import 'package:assignly/classes/objects/modul.dart';
 import 'package:assignly/pages/forgot_password/password_page.dart';
 import 'package:assignly/pages/login/login_bloc.dart';
 import 'package:assignly/pages/planning_page/planning_page.dart';
@@ -78,7 +77,7 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                   ),
             
                   TextField(
-                    controller: emailController,
+                    controller: passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
                     decoration: const InputDecoration(
@@ -100,34 +99,12 @@ class _LoginPageState extends State<LoginPage> with WidgetsBindingObserver {
                   CustomImageBtn(
                     text: "Login", 
                     onTap: () async {
-                      Modul item = Modul(
-                        start: DateTime.now(),
-                        end: DateTime.now().add(const Duration(hours: 8)),
-                      );
-
-                      /*
-                      TODO: THIS IS HOW YOU POST TO THE DATABASE FROM THE API YES SIR
-                      Map<String, dynamic> envelope = API.createModulPostEnvelope(item);
-                      var response = await API.postRequest(envelope, ApiPath.modul);
-                      */
-
                       // TODO: BRUG EVENTS
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const PlanningPage()));
                     }, 
                     updateFunc: () {}, 
                     gradient: btnGradient,
                     image: const Image(image: AssetImage("assets/asd.jpg")), 
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  CustomImageBtn(
-                    text: "Login med Microsoft", 
-                    onTap: () {}, 
-                    updateFunc: () {}, 
-                    // TODO: BEDRE FARVE OG NY BILLEDe
-                    gradient: microsoftGradient,
-                    image: const Image(image: AssetImage("assets/asd.jpg")),
                   ),
                 ],
               ),
